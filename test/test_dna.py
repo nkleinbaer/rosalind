@@ -1,15 +1,12 @@
-from random import randint, shuffle
 from unittest import TestCase
+import filecmp
 
-from dna import count_bases
-from utils.utils import *
+from config import *
+import dna
 
 
 class Test(TestCase):
-    def test_count_bases(self):
-        random_base_counts = {base: randint(0, 250) for base in DNA_BASES}
-        test_sequence = [base for base, count in random_base_counts.items() for i in range(count)]
-        shuffle(test_sequence)
-        test_sequence = DNA("".join(test_sequence))
-        base_counts = count_bases(test_sequence)
-        assert base_counts == random_base_counts
+    def test_main(self):
+        io_file = f'rosalind_{Path(dna.__file__).stem}.txt'
+        dna.main(io_file, TEST_DIR / 'input', TEST_DIR / 'output')
+        assert filecmp.cmp(TEST_DIR / 'output' / io_file, TEST_DIR / 'output_check' / io_file)

@@ -1,6 +1,17 @@
+from random import randint, shuffle
 from unittest import TestCase
 
 from utils.utils import *
+
+
+class TestNucleicAcid(TestCase):
+    def test__get_compliment(self):
+        random_base_counts = {base: randint(0, 250) for base in DNA_BASES}
+        test_sequence = [base for base, count in random_base_counts.items() for i in range(count)]
+        shuffle(test_sequence)
+        test_sequence = NucleicAcid("".join(test_sequence))
+        base_counts = test_sequence.count_bases()
+        assert base_counts == random_base_counts
 
 
 class TestDNA(TestCase):

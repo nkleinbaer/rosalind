@@ -43,6 +43,19 @@ class NucleicAcid:
         translation = self.sequence.maketrans(compliments)
         self.compliment = self.sequence.translate(translation)
 
+    def count_bases(self) -> Dict[str, int]:
+        """
+
+        :param self:
+        :return: a dictionary of bases and the number of times they occur in the genetic sequence
+        """
+
+        base_count_dict = {}
+        for base in self.sequence:
+            base_count_dict[base] = base_count_dict.setdefault(base, 0) + 1
+
+        return base_count_dict
+
 
 class DNA(NucleicAcid):
     """
@@ -69,19 +82,21 @@ def read_n_sequences(path: Union[Path, str], n: int) -> Tuple[str]:
     return tuple(line_list[:n])
 
 
-def write_output_file(path: str, line_list: List[str]) -> None:
+def write_output_file(path: str, data: Union[NucleicAcid, str, List[str]]) -> None:
     """
     Parameters
     ----------
     path : str
         Location to write output file.
-    line_list : List[str]
-        A list of string representing each line in the output text file.
+    data : str | List[str]
+        A NucleicAcid object, string or list of strings representing each line in the output text file.
 
     Returns
     -------
     None
 
     """
+    if not isinstance(data, List):
+        data = [data]
     with open(path, 'w') as f:
-        f.writelines([f'{line}\n' for line in line_list])
+        f.writelines([f'{line}\n' for line in data])

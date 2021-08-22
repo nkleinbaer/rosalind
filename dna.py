@@ -1,29 +1,9 @@
-from pathlib import Path
-from typing import Dict, List
+from typing import Dict
 
 from utils.utils import *
 
-def count_bases(s: NucleicAcid) -> Dict[str, int]:
-    """
-    Parameters
-    ----------
-    s : NucleicAcid
-        An genetic sequence
 
-    Returns
-    -------
-    Dict[str, int]
-        A dictionary of each base and the # of times it occurs in s.
-
-    """
-    base_count_dict = {}
-    for base in s.sequence:
-        base_count_dict[base] = base_count_dict.setdefault(base, 0) + 1
-        
-    return base_count_dict
-
-
-def format_output(base_count_dict: Dict[str, int]) -> List[str]:
+def format_output(base_count_dict: Dict[str, int]) -> str:
     """
 
     Parameters
@@ -33,22 +13,24 @@ def format_output(base_count_dict: Dict[str, int]) -> List[str]:
 
     Returns
     -------
-    List[str]
-        List of lines w/ output format as specified by problem.
+    str
+        A string with base counts formatted as specified by problem statement
 
     """
-    return [f'{base_count_dict["A"]} ' \
-            f'{base_count_dict["C"]} ' \
-            f'{base_count_dict["G"]} ' \
-            f'{base_count_dict["T"]}']
-    
-    
-    
-if __name__ == '__main__':
-    io_file_name = f'rosalind_{Path(__file__).stem}.txt'
-    dna_sequence = DNA(*read_n_sequences(INPUT_DIR/io_file_name, 1))
+    return " ".join([f'{base_count_dict["A"]} '
+                     f'{base_count_dict["C"]} '
+                     f'{base_count_dict["G"]} '
+                     f'{base_count_dict["T"]}'])
 
-    base_count_dict = count_bases(dna_sequence)
+
+def main(io_file, input_dir: Path = INPUT_DIR, output_dir: Path = OUTPUT_DIR):
+    dna_sequence = DNA(*read_n_sequences(input_dir / io_file, 1))
+
+    base_count_dict = dna_sequence.count_bases()
     output_lines = format_output(base_count_dict)
 
-    write_output_file(OUTPUT_DIR/io_file_name, output_lines)
+    write_output_file(output_dir / io_file, output_lines)
+
+
+if __name__ == '__main__':
+    main(f'rosalind_{Path(__file__).stem}.txt')
