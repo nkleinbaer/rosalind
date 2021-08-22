@@ -96,6 +96,8 @@ def write_output_file(path: str, data: Union[NucleicAcid, str, List[str]]) -> No
     None
 
     """
+    if isinstance(data, NucleicAcid):
+        data = data.sequence
     if not isinstance(data, List):
         data = [data]
     with open(path, 'w') as f:
