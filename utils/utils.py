@@ -70,6 +70,22 @@ class DNA(NucleicAcid):
     def _get_compliment(self):
         super()._get_compliment(DNA_COMPLEMENTS)
 
+    def transcribe_to_rna(self) -> 'RNA':
+        return RNA(self.sequence.replace('T', 'U'))
+
+
+class RNA(NucleicAcid):
+    """
+    Class for RNA sequence. Ensures all characters represent valid DNA nucleobases
+    """
+
+    def __init__(self, sequence: str):
+        super().__init__(sequence)
+        self._validate_base_set(RNA_BASES)
+
+    def _get_compliment(self):
+        super()._get_compliment(RNA_COMPLEMENTS)
+
 
 def read_n_sequences(path: Union[Path, str], n: int) -> Tuple[str]:
     """

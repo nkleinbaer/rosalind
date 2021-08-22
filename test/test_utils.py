@@ -24,3 +24,15 @@ class TestDNA(TestCase):
         dna_sequence = DNA('GATACA')
         dna_sequence._get_compliment()
         assert dna_sequence.compliment == 'CTATGT'
+
+    def test__translate_to_rna(self):
+        dna_sequence = DNA('GATACA')
+        rna_sequence = dna_sequence.transcribe_to_rna()
+        assert rna_sequence.sequence == RNA('GAUACA').sequence
+
+
+class TestRNA(TestCase):
+    def test__get_compliment(self):
+        rna_sequence = RNA('GAUACA')
+        rna_sequence._get_compliment()
+        assert rna_sequence.compliment == 'CUAUGU'
