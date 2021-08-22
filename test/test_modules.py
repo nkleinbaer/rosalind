@@ -1,4 +1,4 @@
-    import filecmp
+import filecmp
 from unittest import TestCase
 
 import dna
