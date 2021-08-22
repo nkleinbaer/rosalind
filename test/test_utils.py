@@ -5,7 +5,7 @@ from utils.utils import *
 
 
 class TestNucleicAcid(TestCase):
-    def test__get_compliment(self):
+    def test__count_bases(self):
         random_base_counts = {base: randint(0, 250) for base in DNA_BASES}
         test_sequence = [base for base, count in random_base_counts.items() for i in range(count)]
         shuffle(test_sequence)
