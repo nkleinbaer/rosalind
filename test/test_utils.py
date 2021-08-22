@@ -25,6 +25,11 @@ class TestDNA(TestCase):
         dna_sequence._get_compliment()
         assert dna_sequence.compliment == 'CTATGT'
 
+    def test__get_reverse_compliment(self):
+        dna_sequence = DNA('GATACA')
+        dna_sequence.get_reverse_compliment()
+        assert dna_sequence.reverse_compliment == 'TGTATC'
+
     def test__translate_to_rna(self):
         dna_sequence = DNA('GATACA')
         rna_sequence = dna_sequence.transcribe_to_rna()

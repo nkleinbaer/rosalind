@@ -43,6 +43,10 @@ class NucleicAcid:
         translation = self.sequence.maketrans(compliments)
         self.compliment = self.sequence.translate(translation)
 
+    def get_reverse_compliment(self):
+        self._get_compliment()
+        self.reverse_compliment = self.compliment[::-1]
+
     def count_bases(self) -> Dict[str, int]:
         """
 
