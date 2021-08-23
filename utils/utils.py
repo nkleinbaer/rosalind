@@ -91,7 +91,7 @@ class RNA(NucleicAcid):
         super()._get_compliment(RNA_COMPLEMENTS)
 
 
-def read_n_sequences(path: Union[Path, str], n: int) -> Tuple[str]:
+def read_n_sequences(path: Union[Path, str], n: int = 1) -> Tuple[str]:
     """
     :param path: String or Path object pointing to an input file containing a genetic sequence on each line
     :param n: number of sequences to be returned
@@ -101,6 +101,16 @@ def read_n_sequences(path: Union[Path, str], n: int) -> Tuple[str]:
         line_list = f.read().splitlines()
     return tuple(line_list[:n])
 
+def read_n_params(path : Union[Path, str], n: int = 1) -> Tuple[int]:
+    """
+
+    :param path: String or Path pointing to an input file containing whitespace delimited parameters
+    :param n: number of params to return
+    :return: a tuple of parameters
+    """
+    with open(path, 'r') as f:
+        line = f.readline()
+    return tuple([int(i) for i in line.split(" ")])
 
 def write_output_file(path: str, data: Union[NucleicAcid, str, List[str]]) -> None:
     """

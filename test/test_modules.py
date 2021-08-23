@@ -4,6 +4,7 @@ from unittest import TestCase
 import dna
 import revc
 import rna
+import fib
 from config import *
 
 
@@ -21,4 +22,9 @@ class Test(TestCase):
     def test_revc_main(self):
         io_file = f'rosalind_{Path(revc.__file__).stem}.txt'
         revc.main(io_file, TEST_DIR / 'input', TEST_DIR / 'output')
+        assert filecmp.cmp(TEST_DIR / 'output' / io_file, TEST_DIR / 'output_check' / io_file)
+
+    def test_fib_main(self):
+        io_file = f'rosalind_{Path(fib.__file__).stem}.txt'
+        fib.main(io_file, TEST_DIR / 'input', TEST_DIR / 'output')
         assert filecmp.cmp(TEST_DIR / 'output' / io_file, TEST_DIR / 'output_check' / io_file)
