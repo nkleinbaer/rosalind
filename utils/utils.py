@@ -33,6 +33,7 @@ class NucleicAcid:
     def __init__(self, sequence: str):
         self.sequence = sequence.upper()
         self.base_set = set(self.sequence)
+        self._base_count_dict = None
 
     def _validate_base_set(self, valid_bases: Set[str]):
         if invalid_bases := self.base_set.difference(valid_bases):
@@ -47,18 +48,14 @@ class NucleicAcid:
         self._get_compliment()
         self.reverse_compliment = self.compliment[::-1]
 
-    def count_bases(self) -> Dict[str, int]:
-        """
+    @property
+    def base_count(self) -> Dict[str, int]:
+        if self._base_count_dict is None:
+            self._base_count_dict = {}
+            for base in self.sequence:
+                self._base_count_dict[base] = self._base_count_dict.setdefault(base, 0) + 1
 
-        :param self:
-        :return: a dictionary of bases and the number of times they occur in the genetic sequence
-        """
-
-        base_count_dict = {}
-        for base in self.sequence:
-            base_count_dict[base] = base_count_dict.setdefault(base, 0) + 1
-
-        return base_count_dict
+        return self._base_count_dict
 
 
 class DNA(NucleicAcid):
