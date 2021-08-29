@@ -6,6 +6,7 @@ import revc
 import rna
 import fib
 import _gc
+import hamm
 
 from config import *
 
@@ -34,4 +35,9 @@ class Test(TestCase):
     def test_gc_main(self):
         io_file = f'rosalind{Path(_gc.__file__).stem}.txt'
         _gc.main(io_file, TEST_DIR / 'input', TEST_DIR / 'output')
+        assert filecmp.cmp(TEST_DIR / 'output' / io_file, TEST_DIR / 'output_check' / io_file)
+
+    def test_hamm_main(self):
+        io_file = f'rosalind_{Path(hamm.__file__).stem}.txt'
+        hamm.main(io_file, TEST_DIR / 'input', TEST_DIR / 'output')
         assert filecmp.cmp(TEST_DIR / 'output' / io_file, TEST_DIR / 'output_check' / io_file)

@@ -65,6 +65,13 @@ class NucleicAcid:
             self._gc_content = (self.base_count['G'] + self.base_count['C']) / self.length
         return self._gc_content
 
+    def hamming_distance(self, sequence):
+        distance = 0
+        for i, base in enumerate(self.sequence):
+            if base != sequence.sequence[i]:
+                distance += 1
+        return distance
+
 
 class DNA(NucleicAcid):
     """
@@ -96,7 +103,7 @@ class RNA(NucleicAcid):
         super()._get_compliment(RNA_COMPLEMENTS)
 
 
-def read_n_sequences(path: Union[Path, str], n: int = 1) -> Tuple[str]:
+def read_n_sequences(path: Union[Path, str], n: int = 1, sequence_type: NucleicAcid = None) -> Tuple[str]:
     """
     :param path: String or Path object pointing to an input file containing a genetic sequence on each line
     :param n: number of sequences to be returned
@@ -104,7 +111,11 @@ def read_n_sequences(path: Union[Path, str], n: int = 1) -> Tuple[str]:
     """
     with open(path, 'r') as f:
         line_list = f.read().splitlines()
-    return tuple(line_list[:n])
+
+    if type is not None:
+        return tuple([sequence_type(line) for line in line_list[:n]])
+    else:
+        return tuple(line_list[:n])
 
 
 def read_n_params(path: Union[Path, str], n: int = 1) -> Tuple[int]:
@@ -116,7 +127,7 @@ def read_n_params(path: Union[Path, str], n: int = 1) -> Tuple[int]:
     """
     with open(path, 'r') as f:
         line = f.readline()
-    return tuple([int(i) for i in line.split(" ")])
+    return tuple([int(i) for i in line.split(" ")][:n])
 
 
 def write_output_file(path: str, data: Union[NucleicAcid, str, List[str]]) -> None:
