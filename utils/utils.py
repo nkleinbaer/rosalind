@@ -32,8 +32,10 @@ class NucleicAcid:
 
     def __init__(self, sequence: str):
         self.sequence = sequence.upper()
+        self.length = len(self.sequence)
         self.base_set = set(self.sequence)
         self._base_count_dict = None
+        self._gc_content = None
 
     def _validate_base_set(self, valid_bases: Set[str]):
         if invalid_bases := self.base_set.difference(valid_bases):
@@ -56,6 +58,12 @@ class NucleicAcid:
                 self._base_count_dict[base] = self._base_count_dict.setdefault(base, 0) + 1
 
         return self._base_count_dict
+
+    @property
+    def gc_content(self) -> float:
+        if self._gc_content is None:
+            self._gc_content = (self.base_count['G'] + self.base_count['C']) / self.length
+        return self._gc_content
 
 
 class DNA(NucleicAcid):
@@ -98,7 +106,8 @@ def read_n_sequences(path: Union[Path, str], n: int = 1) -> Tuple[str]:
         line_list = f.read().splitlines()
     return tuple(line_list[:n])
 
-def read_n_params(path : Union[Path, str], n: int = 1) -> Tuple[int]:
+
+def read_n_params(path: Union[Path, str], n: int = 1) -> Tuple[int]:
     """
 
     :param path: String or Path pointing to an input file containing whitespace delimited parameters
@@ -108,6 +117,7 @@ def read_n_params(path : Union[Path, str], n: int = 1) -> Tuple[int]:
     with open(path, 'r') as f:
         line = f.readline()
     return tuple([int(i) for i in line.split(" ")])
+
 
 def write_output_file(path: str, data: Union[NucleicAcid, str, List[str]]) -> None:
     """
@@ -129,3 +139,20 @@ def write_output_file(path: str, data: Union[NucleicAcid, str, List[str]]) -> No
         data = [data]
     with open(path, 'w') as f:
         f.writelines([f'{line}\n' for line in data])
+
+
+def parse_fasta(path: Union[Path, str], sequence_type: NucleicAcid = None) -> Dict[str, Union[str, NucleicAcid]]:
+    with open(path, 'r') as f:
+        line_list = f.read().splitlines()
+
+    genetic_sequence_dict = {}
+    for line in line_list:
+        if line[0] == '>':
+            sequence_id = line[1:]
+            genetic_sequence_dict[sequence_id] = ""
+        else:
+            genetic_sequence_dict[sequence_id] += line.strip()
+
+    if sequence_type:
+        genetic_sequence_dict = {seq_id: sequence_type(seq) for seq_id, seq in genetic_sequence_dict.items()}
+    return genetic_sequence_dict

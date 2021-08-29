@@ -13,6 +13,9 @@ class TestNucleicAcid(TestCase):
         base_counts = test_sequence.base_count
         assert base_counts == random_base_counts
 
+    def test_gc_content(self):
+        test_sequence = NucleicAcid('GATACA')
+        assert test_sequence.gc_content == 2/6
 
 class TestDNA(TestCase):
 
@@ -41,3 +44,5 @@ class TestRNA(TestCase):
         rna_sequence = RNA('GAUACA')
         rna_sequence._get_compliment()
         assert rna_sequence.compliment == 'CUAUGU'
+
+
